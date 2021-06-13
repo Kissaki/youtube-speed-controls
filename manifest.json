@@ -1,0 +1,12 @@
+{
+  "manifest_version": 2,
+  "name": "YouTube Playback Speed Control",
+  "description": "Add playback speed indicator and controls to the YouTube video player bottom left.",
+  "version": "1.0.0",
+  "content_scripts": [
+    {
+      "matches": ["*://*.youtube.com/*"],
+      "js": ["content.js"]
+    }
+  ]
+}
