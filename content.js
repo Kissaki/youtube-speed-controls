@@ -7,10 +7,11 @@
   let container = document.createElement('div')
   container.className = 'pbspeed-container'
   container.style = 'margin:0 24px; display:grid; grid-template-columns: auto auto; gap:12px;'
+  // Control layout:
+  // | Display | 0.25 0.50 0.75 1.00
+  // | Current | 1.25 1.50 1.75 2.00
   container.innerHTML = `<div class="rdisplay" style="display:inline-block; font-size:22px;">⏱ <span class="pbspeed-value"></span></div>
   <div class="setrs" style="display:grid; grid-template-columns:repeat(4, auto); gap: 2px;"><div>0.25</div><div>0.50</div><div>0.75</div><div>1.00</div><div>1.25</div><div>1.50</div><div>1.75</div><div>2.00</div></div>`
-  // 0.25 0.50 0.75 1.00
-  // 1.25 1.50 1.75 2.00
 
   let vid = getVideo()
   let valEl = container.querySelector('.pbspeed-value')
