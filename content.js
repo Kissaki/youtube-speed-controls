@@ -27,5 +27,10 @@
     x.style.display = 'inline-block'
   })
 
-  parent.appendChild(container)
+  let timeDisplay = parent.querySelector('.ytp-time-display')
+  if (timeDisplay) {
+    timeDisplay.insertAdjacentElement('afterend', container)
+  } else {
+    parent.appendChild(container)
+  }
 })()
