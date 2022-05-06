@@ -21,8 +21,7 @@ function createContainer() {
     //          |       2px gap
     //          |      14px row2 text
     //         _|_      2px padding
-    x.style = 'font-size: 14px; line-height: 14px; display: inline-block; padding: 2px 4px;'
-    x.style.display = 'inline-block'
+    x.style = 'font-size: 14px; line-height: 14px; padding: 2px 4px;'
   })
 
   return container
