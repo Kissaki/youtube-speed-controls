@@ -16,10 +16,12 @@ function createContainer() {
 
   container.querySelectorAll('.setrs > *').forEach(x => {
     x.addEventListener('click', () => vid.playbackRate = x.innerText)
-    // height avail: 40 full, 20 row. 2x 2px padding; 20 - 4 = 16. container grid gap 2px; 16 - 2 = 14
-    x.style = 'font-size: 12px; line-height: 12px; display: inline-block; padding: 2px 4px;'
-    x.style.fontSize = '14px'
-    x.style.lineHeight = '14px'
+    // height  ^î^      2px padding
+    //   40px   |      14px row1 text (font-size + line-height)
+    //          |       2px gap
+    //          |      14px row2 text
+    //         _|_      2px padding
+    x.style = 'font-size: 14px; line-height: 14px; display: inline-block; padding: 2px 4px;'
     x.style.display = 'inline-block'
   })
 
