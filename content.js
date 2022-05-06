@@ -1,7 +1,7 @@
 function createContainer() {
   let container = document.createElement('div')
   container.className = 'pbspeed-container'
-  container.style = 'margin:0 24px; display:grid; grid-template-columns: auto auto; gap:12px;'
+  container.style = 'margin:0 14px; display:grid; grid-template-columns: auto auto; gap:12px;'
   // Control layout:
   // | Display | 0.25 0.50 0.75 1.00
   // | Current | 1.25 1.50 1.75 2.00
