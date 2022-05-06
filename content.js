@@ -2,11 +2,13 @@ function createContainer() {
   let container = document.createElement('div')
   container.className = 'pbspeed-container'
   container.style = 'margin:0 14px; display:grid; grid-template-columns: auto auto; gap:12px;'
+
   // Control layout:
   // | Display | 0.25 0.50 0.75 1.00
   // | Current | 1.25 1.50 1.75 2.00
-  container.innerHTML = `<div class="rdisplay" style="display:inline-block; font-size:22px;">⏱ <span class="pbspeed-value"></span></div>
-  <div class="setrs" style="display: grid; grid-template: 1fr 1fr / repeat(4, auto); column-gap: 6px;"><div>0.25</div><div>0.50</div><div>0.75</div><div>1.00</div><div>1.25</div><div>1.50</div><div>1.75</div><div>2.00</div></div>`
+  let setrsHTML = `<div class="setrs" style="display: grid; grid-template: 1fr 1fr / repeat(4, auto); column-gap: 6px;"><div>0.25</div><div>0.50</div><div>0.75</div><div>1.00</div><div>1.25</div><div>1.50</div><div>1.75</div><div>2.00</div></div>`
+  let displayHTML = `<div class="rdisplay" style="display:inline-block; font-size:22px;">⏱ <span class="pbspeed-value"></span></div>`
+  container.innerHTML = `${displayHTML}${setrsHTML}`
 
   let vid = document.querySelector('video.html5-main-video')
   let valEl = container.querySelector('.pbspeed-value')
