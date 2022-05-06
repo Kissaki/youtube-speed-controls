@@ -21,7 +21,7 @@ function createContainer() {
     //          |       2px gap
     //          |      14px row2 text
     //         _|_      2px padding
-    x.style = 'font-size: 14px; line-height: 14px; padding: 2px 4px;'
+    x.style = 'font-size: 14px; line-height: 14px; padding: 2px 4px; cursor: pointer;'
   })
 
   return container
