@@ -6,7 +6,7 @@ function createContainer() {
   // | Display | 0.25 0.50 0.75 1.00
   // | Current | 1.25 1.50 1.75 2.00
   container.innerHTML = `<div class="rdisplay" style="display:inline-block; font-size:22px;">⏱ <span class="pbspeed-value"></span></div>
-  <div class="setrs" style="display:grid; grid-template-columns:repeat(4, auto); gap: 2px;"><div>0.25</div><div>0.50</div><div>0.75</div><div>1.00</div><div>1.25</div><div>1.50</div><div>1.75</div><div>2.00</div></div>`
+  <div class="setrs" style="display: grid; grid-template: 1fr 1fr / repeat(4, auto); column-gap: 6px;"><div>0.25</div><div>0.50</div><div>0.75</div><div>1.00</div><div>1.25</div><div>1.50</div><div>1.75</div><div>2.00</div></div>`
 
   let vid = document.querySelector('video.html5-main-video')
   let valEl = container.querySelector('.pbspeed-value')
@@ -16,12 +16,8 @@ function createContainer() {
 
   container.querySelectorAll('.setrs > *').forEach(x => {
     x.addEventListener('click', () => vid.playbackRate = x.innerText)
-    // height  ^î^      2px padding
-    //   40px   |      14px row1 text (font-size + line-height)
-    //          |       2px gap
-    //          |      14px row2 text
-    //         _|_      2px padding
-    x.style = 'font-size: 14px; line-height: 14px; padding: 2px 4px; cursor: pointer;'
+    // container height 48px => element height 48 / 2 = 24 px
+    x.style = 'font-size: 14px; line-height: 24px; display: flex; align-items: center; cursor: pointer;'
   })
 
   return container
