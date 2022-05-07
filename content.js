@@ -1,6 +1,11 @@
+let existing = document.getElementById('pbspeed-container')
+if (existing) {
+  existing.remove()
+}
+
 function createContainer() {
   let container = document.createElement('div')
-  container.className = 'pbspeed-container'
+  container.id = 'pbspeed-container'
   container.style = 'margin:0 14px; display:flex; align-items: center; gap:12px;'
 
   let displayHTML = `<div class="rdisplay" style="grid-row: 1; grid-column: 1; font-size:22px;">⏱ <span class="pbspeed-value"></span></div>`
