@@ -21,7 +21,7 @@ function createContainer() {
   let valEl = container.querySelector('.pbspeed-value')
   let slider = container.querySelector('#slider')
   let updateDisplay = () => {
-    valEl.innerText = `${vid.playbackRate.toLocaleString(undefined, { minimumFractionDigits: 2 })}x`
+    valEl.innerText = `${vid.playbackRate.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}x`
     slider.value = vid.playbackRate
   }
   updateDisplay()
