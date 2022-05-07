@@ -8,5 +8,13 @@
       "matches": ["*://*.youtube.com/*"],
       "js": ["content.js"]
     }
+  ],
+  "options_ui": {
+    "page": "pages/options.html",
+    "browser_style": true,
+    "chrome_style": true
+  },
+  "permissions": [
+    "storage"
   ]
 }
