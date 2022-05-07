@@ -103,7 +103,7 @@ class Instance {
     this._video.playbackRate = e.target.value
   }
   async _updateControlVisibility() {
-    let values = await browser.storage.local.get({ 'show-slider': false, 'show-presets': false })
+    let values = await browser.storage.local.get({ 'show-slider': true, 'show-presets': false })
     this._presets.style.display = values['show-presets'] ? 'grid' : 'none'
     this._slider.style.display = values['show-slider'] ? 'block' : 'none'
   }

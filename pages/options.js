@@ -5,7 +5,7 @@ slider.addEventListener('change', e => browser.storage.local.set({ 'show-slider'
 presets.addEventListener('change', e => browser.storage.local.set({ 'show-presets': e.target.checked }))
 
 async function init() {
-    let values = await browser.storage.local.get({ 'show-slider': false, 'show-presets': false })
+    let values = await browser.storage.local.get({ 'show-slider': true, 'show-presets': false })
     slider.checked = values['show-slider']
     presets.checked = values['show-presets']
 }
