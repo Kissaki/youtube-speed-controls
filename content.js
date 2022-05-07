@@ -10,7 +10,6 @@ function createContainer() {
   // | Display | 0.25 0.50 0.75 1.00
   // | Current | 1.25 1.50 1.75 2.00
   let setrsHTML = `<div class="setrs" style="grid-row: 1; grid-column: 3; display: none; grid-template: 1fr 1fr / repeat(4, auto); column-gap: 6px;"><div>0.25</div><div>0.50</div><div>0.75</div><div>1.00</div><div>1.25</div><div>1.50</div><div>1.75</div><div>2.00</div></div>`
-  //let sliderHTML = `<input id="slider" type="range" min="0" max="2.5" step="0.05" style="width:cursor:pointer;width:7em;" />`
   container.innerHTML = `${displayHTML}${controlToggle}${sliderHTML}${setrsHTML}`
 
   // Styling children en-mass
