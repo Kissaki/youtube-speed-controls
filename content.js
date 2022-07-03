@@ -85,6 +85,9 @@ class Instance {
     for (let x of this._presets.childNodes) x.addEventListener('click', this._onPresetClick.bind(this))
   
     this._slider.addEventListener('input', this._onSliderInput.bind(this))
+    
+    this._display.addEventListener('click', this._onRdisplayClick.bind(this))
+    this._display.style.cursor = 'pointer'
 
     // (How) Can we listen to option changes from a content script?
     // browser.storage.onChanged.addEventListener(e => console.log(e))
@@ -101,6 +104,9 @@ class Instance {
   }
   _onSliderInput(e) {
     this._video.playbackRate = e.target.value
+  }
+  _onRdisplayClick(e) {
+    this._video.playbackRate = 1.0
   }
   async _updateControlVisibility() {
     let values = await browser.storage.local.get({ 'show-slider': true, 'show-presets': false })
