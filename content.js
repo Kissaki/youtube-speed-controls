@@ -61,7 +61,7 @@ class Instance {
     container.className = 'pbspeed-container'
     container.style = 'margin:0 14px; display:flex; align-items: center; gap:12px;'
 
-    let displayHTML = `<div class="rdisplay" style="grid-row: 1; grid-column: 1; font-size:22px;">⏱ <span class="pbspeed-value"></span></div>`
+    let displayHTML = `<div class="rdisplay" style="grid-row: 1; grid-column: 1; font-size:22px; user-select: none;">⏱ <span class="pbspeed-value"></span></div>`
     let sliderHTML = `<input id="slider" class="pbspeed-slider" type="range" min="0" max="2" step="0.05" style="grid-row: 1; grid-column: 3; width:7em; height:0.72em; -webkit-appearance:none; outline:none; opacity:0.70; background:#111111; box-shadow: inset 0 0 5px rgba(0, 0, 0, 1); border-radius: 4px;"/>`
     // Control layout:
     // | Display | 0.25 0.50 0.75 1.00
