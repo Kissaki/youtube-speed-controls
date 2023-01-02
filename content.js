@@ -1,6 +1,16 @@
-class VideoFinder {
-  constructor(callback) {
-    this._callback = callback
+class NormalPlayerObserver {
+  // ytd-watch-flexy > #player-theater-container > #player-container > ytd-player#ytd-player > #container > #movie_player
+  //                                                                                                                      > .html5-video-container > video
+  //                                                                                                                      > .ytp-chrome-bottom > .ytp-chrome-controls > .ytp-left-controls
+
+  /**
+   * @param {(video: HTMLVideoElement, vcLeft: Element)} newPlayerCallback 
+   */
+  constructor(newPlayerCallback) {
+    /**
+     * @type {(video: HTMLVideoElement, vcLeft: Element)}
+     */
+    this._newPlayerCallback = newPlayerCallback
 
     this._find()
   }
@@ -13,10 +23,12 @@ class VideoFinder {
   }
   _tryIdentify() {
     let video = document.querySelector('video')
+    if (!video) return false
+
     let vcLeft = document.querySelector('.ytp-left-controls')
-    if (!video || !vcLeft) return false
-    
-    this._callback(video, vcLeft)
+    if (!vcLeft) return false
+
+    this._newPlayerCallback(video, vcLeft)
     return true
   }
   _onNavFinish() {
@@ -40,10 +52,89 @@ class VideoFinder {
   }
 }
 
+class ShortsPlayerObserver {
+  // Shorts player DOM element layout (video and controls):
+  // #shorts-container > #shorts-inner-container > ytd-reel-video-renderer[id][is-active][show-player-controls] > #player-container
+  //                                                                                                                            > ytd-player#player > #container.ytd-player > #shorts-player > .html5-video-container > video
+  //                                                                                                                            > .player-controls > ytd-shorts-player-controls > yt-icon-button
+  // #shorts-inner-container > ytd-reel-video-renderer is loaded and inserted in sets of 10
+  // delayed async load and insert of #player-container > ytd-player#player
+
+  /**
+   * @param {(videoElement: HTMLVideoElement, controlsContainer: Element)} newPlayerCallback
+   */
+  constructor(newPlayerCallback) {
+    /** @type {(videoElement: HTMLVideoElement, controlsContainer: Element)} */
+    this._newPlayerCallback = newPlayerCallback
+    /** @type {MutationObserver} */
+    this._observer = new MutationObserver(this._onMutation.bind(this))
+    this._observerVideo = new MutationObserver(this._onVideoMutation.bind(this))
+
+    this._findAndObserve()
+    document.addEventListener("yt-navigate-finish", this._findAndObserve.bind(this))
+  }
+
+  _findAndObserve() {
+    let container = document.querySelector('#shorts-inner-container')
+    if (!container) return
+    this._observer.observe(container, { childList: true })
+  }
+
+  /**
+   * @type {MutationCallback}
+   */
+  _onMutation(mutList, observer) {
+    for (let mut of mutList) {
+      if (mut.type !== 'childList') continue
+
+      for (let newNode of mut.addedNodes) {
+        if (newNode.nodeName !== 'YTD-REEL-VIDEO-RENDERER') continue
+
+        let playerContainer = newNode.querySelector('#player-container')
+        this._tryPlayerContainer(playerContainer)
+      }
+    }
+  }
+
+  _tryPlayerContainer(playerContainer) {
+    let videoElement = playerContainer.querySelector('video')
+    if (!videoElement) {
+      this._observerVideo.observe(playerContainer, { childList: true })
+      return
+    }
+
+    let controlsContainer = playerContainer.querySelector('.player-controls > ytd-shorts-player-controls')
+    if (!controlsContainer) throw new Error('Unexpected: player controls container missing in player container')
+
+    this._newPlayerCallback(videoElement, controlsContainer)
+  }
+
+  /**
+   * @type {MutationCallback}
+   */
+  _onVideoMutation(mutList, observer) {
+    for (let mut of mutList) {
+      if (mut.type !== 'childList') continue
+
+      for (let newNode of mut.addedNodes) {
+        if (newNode.id !== 'player') continue
+
+        let playerContainer = newNode.closest('#player-container')
+        this._tryPlayerContainer(playerContainer)
+      }
+    }
+  }
+}
+
 class Instance {
-  constructor(video, vcLeft) {
+  /**
+   * @param {HTMLVideoElement} video 
+   * @param {Element} controlsContainer 
+   */
+  constructor(video, controlsContainer) {
+    /** @type {HTMLVideoElement} */
     this._video = video
-    this._vcLeft = vcLeft
+    this._controlsContainer = controlsContainer
 
     this._removeExisting()
     this._create()
@@ -53,7 +144,7 @@ class Instance {
     this._insert()
   }
   _removeExisting() {
-    let existing = this._vcLeft.querySelector('.pbspeed-container')
+    let existing = this._controlsContainer.querySelector('.pbspeed-container')
     if (existing) existing.remove()
   }
   _create() {
@@ -114,21 +205,26 @@ class Instance {
     this._slider.style.display = values['show-slider'] ? 'block' : 'none'
   }
   _insert() {
-    let timeDisplay = this._vcLeft.querySelector('.ytp-time-display')
+    let timeDisplay = this._controlsContainer.querySelector('.ytp-time-display')
     if (timeDisplay) {
       timeDisplay.insertAdjacentElement('afterend', this._container)
       return true
     }
   
-    this._vcLeft.appendChild(this._container)
+    this._controlsContainer.appendChild(this._container)
     return true
   }
 }
 
 let init = async () => {
-  new VideoFinder((video, vcLeft) => {
-    console.debug('[YouTube Playback Speed Control] Identified elements, initializing controls…', video, vcLeft)
-    new Instance(video, vcLeft)
-  })
+  /**
+   * @type {(videoElement: HTMLVideoElement, controlsContainer: Element)}
+   */
+  let onNewPlayer = (video, controlsContainer) => {
+    console.debug('[YouTube Playback Speed Control] Identified elements, initializing controls…', video, controlsContainer)
+    new Instance(video, controlsContainer)
+  }
+  new NormalPlayerObserver(onNewPlayer)
+  new ShortsPlayerObserver(onNewPlayer)
 }
 init()
